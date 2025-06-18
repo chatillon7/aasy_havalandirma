@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+// Prisma client'ı doğrudan burada oluştur
+const prisma = new PrismaClient();
 
 // POST: Veritabanı sıfırlama (tüm tabloları temizle)
 export async function POST() {

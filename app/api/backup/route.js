@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import prisma from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+// Prisma client'ı doğrudan burada oluştur
+const prisma = new PrismaClient();
 
 // GET: Veritabanı yedek dosyasını Supabase Storage'dan indir
 export async function GET() {
@@ -44,44 +47,68 @@ export async function GET() {
 // POST: Veritabanı yedekleme (JSON export)
 export async function POST() {
   try {
-    // Prisma bağlantısını test et
+    // Prisma client kontrolü
     if (!prisma) {
-      return NextResponse.json({ error: 'Prisma client başlatılamadı.' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Prisma client düzgün başlatılamadı.',
+        debug: {
+          databaseUrl: !!process.env.DATABASE_URL,
+          directUrl: !!process.env.DIRECT_URL
+        }
+      }, { status: 500 });
     }
 
     // Veritabanı bağlantısını test et
-    await prisma.$connect();
+    try {
+      await prisma.$connect();
+    } catch (connectError) {
+      return NextResponse.json({ 
+        error: `Veritabanı bağlantı hatası: ${connectError.message}` 
+      }, { status: 500 });
+    }
     
     // Tüm tabloları güvenli şekilde export et
-    const settings = await prisma.setting.findMany().catch((e) => {
-      console.error('Settings error:', e);
-      return [];
-    });
+    let settings = [];
+    try {
+      settings = await prisma.setting.findMany();
+    } catch (e) {
+      console.error('Settings findMany error:', e);
+    }
     
-    const homepageContent = await prisma.homepageContent.findMany().catch((e) => {
-      console.error('HomepageContent error:', e);
-      return [];
-    });
+    let homepageContent = [];
+    try {
+      homepageContent = await prisma.homepageContent.findMany();
+    } catch (e) {
+      console.error('HomepageContent findMany error:', e);
+    }
     
-    const galleryItems = await prisma.galleryItem.findMany().catch((e) => {
-      console.error('GalleryItem error:', e);
-      return [];
-    });
+    let galleryItems = [];
+    try {
+      galleryItems = await prisma.galleryItem.findMany();
+    } catch (e) {
+      console.error('GalleryItem findMany error:', e);
+    }
     
-    const products = await prisma.product.findMany().catch((e) => {
-      console.error('Product error:', e);
-      return [];
-    });
+    let products = [];
+    try {
+      products = await prisma.product.findMany();
+    } catch (e) {
+      console.error('Product findMany error:', e);
+    }
     
-    const contactContent = await prisma.contactContent.findMany().catch((e) => {
-      console.error('ContactContent error:', e);
-      return [];
-    });
+    let contactContent = [];
+    try {
+      contactContent = await prisma.contactContent.findMany();
+    } catch (e) {
+      console.error('ContactContent findMany error:', e);
+    }
     
-    const users = await prisma.user.findMany().catch((e) => {
-      console.error('User error:', e);
-      return [];
-    });
+    let users = [];
+    try {
+      users = await prisma.user.findMany();
+    } catch (e) {
+      console.error('User findMany error:', e);
+    }
     
     const backupData = {
       exportDate: new Date().toISOString(),
@@ -126,8 +153,16 @@ export async function POST() {
     });
   } catch (e) {
     console.error('Backup POST error:', e);
-    return NextResponse.json({ success: false, error: `Backup POST hatası: ${e.message}` }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      error: `Backup POST hatası: ${e.message}`,
+      stack: e.stack 
+    }, { status: 500 });
   } finally {
-    await prisma.$disconnect();
+    try {
+      await prisma.$disconnect();
+    } catch (disconnectError) {
+      console.error('Prisma disconnect error:', disconnectError);
+    }
   }
 }
