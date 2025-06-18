@@ -55,10 +55,9 @@ export default function AdminProfilePage() {
             <div className="col-md-6">
               <label className="form-label">Ad Soyad</label>
               <input type="text" className="form-control" name="name" value={form.name} onChange={handleChange} required />
-            </div>
-            <div className="col-md-6">
+            </div>            <div className="col-md-6">
               <label className="form-label">E-posta</label>
-              <input type="email" className="form-control" name="email" value={form.email} onChange={handleChange} required />
+              <input type="email" className="form-control" name="email" value={form.email} onChange={handleChange} required autoComplete="username" />
             </div>
             <div className="col-md-6">
               <label className="form-label">Yeni Şifre</label>
