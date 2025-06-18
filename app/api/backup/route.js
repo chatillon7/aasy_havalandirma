@@ -44,13 +44,44 @@ export async function GET() {
 // POST: Veritabanı yedekleme (JSON export)
 export async function POST() {
   try {
+    // Prisma bağlantısını test et
+    if (!prisma) {
+      return NextResponse.json({ error: 'Prisma client başlatılamadı.' }, { status: 500 });
+    }
+
+    // Veritabanı bağlantısını test et
+    await prisma.$connect();
+    
     // Tüm tabloları güvenli şekilde export et
-    const settings = await prisma.setting.findMany().catch(() => []);
-    const homepageContent = await prisma.homepageContent.findMany().catch(() => []);
-    const galleryItems = await prisma.galleryItem.findMany().catch(() => []);
-    const products = await prisma.product.findMany().catch(() => []);
-    const contactContent = await prisma.contactContent.findMany().catch(() => []);
-    const users = await prisma.user.findMany().catch(() => []);
+    const settings = await prisma.setting.findMany().catch((e) => {
+      console.error('Settings error:', e);
+      return [];
+    });
+    
+    const homepageContent = await prisma.homepageContent.findMany().catch((e) => {
+      console.error('HomepageContent error:', e);
+      return [];
+    });
+    
+    const galleryItems = await prisma.galleryItem.findMany().catch((e) => {
+      console.error('GalleryItem error:', e);
+      return [];
+    });
+    
+    const products = await prisma.product.findMany().catch((e) => {
+      console.error('Product error:', e);
+      return [];
+    });
+    
+    const contactContent = await prisma.contactContent.findMany().catch((e) => {
+      console.error('ContactContent error:', e);
+      return [];
+    });
+    
+    const users = await prisma.user.findMany().catch((e) => {
+      console.error('User error:', e);
+      return [];
+    });
     
     const backupData = {
       exportDate: new Date().toISOString(),
@@ -94,6 +125,9 @@ export async function POST() {
       recordCounts: backupData.recordCounts
     });
   } catch (e) {
+    console.error('Backup POST error:', e);
     return NextResponse.json({ success: false, error: `Backup POST hatası: ${e.message}` }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
