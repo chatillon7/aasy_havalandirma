@@ -62,11 +62,11 @@ export default function AdminProfilePage() {
             </div>
             <div className="col-md-6">
               <label className="form-label">Yeni Şifre</label>
-              <input type="password" className="form-control" name="password" value={form.password} onChange={handleChange} />
+              <input type="password" className="form-control" name="password" value={form.password} onChange={handleChange} autoComplete="new-password" />
             </div>
             <div className="col-md-6">
               <label className="form-label">Şifre Tekrar</label>
-              <input type="password" className="form-control" name="password2" value={form.password2} onChange={handleChange} />
+              <input type="password" className="form-control" name="password2" value={form.password2} onChange={handleChange} autoComplete="new-password" />
             </div>
             <div className="col-md-12">
               <button type="submit" className="btn btn-success">Güncelle</button>

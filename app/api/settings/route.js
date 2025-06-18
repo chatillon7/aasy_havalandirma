@@ -3,8 +3,13 @@ import { NextResponse } from 'next/server';
 
 // GET: Site ayarlarını getir (tek kayıt)
 export async function GET() {
-  const settings = await prisma.siteSettings.findFirst();
-  return NextResponse.json(settings);
+  try {
+    const settings = await prisma.siteSettings.findFirst();
+    return NextResponse.json(settings || {});
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }
 
 // POST: Site ayarlarını güncelle veya oluştur

@@ -12,7 +12,7 @@ export default function LoginForm() {
 
       <div className="mb-3">
         <label htmlFor="email" className="form-label">Email</label>
-        <input id="email" name="email" placeholder="Email" className="form-control" />
+        <input id="email" name="email" placeholder="Email" className="form-control" autoComplete="username" />
       </div>
       {state?.errors?.email && <div className="text-danger small mb-2">{state.errors.email}</div>}
 

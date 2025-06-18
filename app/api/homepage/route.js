@@ -3,8 +3,13 @@ import { NextResponse } from 'next/server';
 
 // GET: Anasayfa içeriğini getir (tek kayıt)
 export async function GET() {
-  const content = await prisma.homepageContent.findFirst();
-  return NextResponse.json(content);
+  try {
+    const content = await prisma.homepageContent.findFirst();
+    return NextResponse.json(content || {});
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }
 
 // POST: Anasayfa içeriğini güncelle veya oluştur

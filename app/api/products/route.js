@@ -3,14 +3,21 @@ import { NextResponse } from 'next/server';
 
 // GET: Tüm ürünleri listele veya id ile tek ürün getir
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
-  if (id) {
-    const product = await prisma.product.findUnique({ where: { id: Number(id) } });
-    return NextResponse.json(product);
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (id) {
+      const product = await prisma.product.findUnique({ where: { id: Number(id) } });
+      if (!product) {
+        return NextResponse.json({ error: 'Ürün bulunamadı.' }, { status: 404 });
+      }
+      return NextResponse.json(product);
+    }
+    const products = await prisma.product.findMany({ orderBy: { id: 'desc' } });
+    return NextResponse.json(products);
+  } catch (e) {
+    return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
   }
-  const products = await prisma.product.findMany({ orderBy: { id: 'desc' } });
-  return NextResponse.json(products);
 }
 
 // POST: Yeni ürün ekle
@@ -37,24 +44,32 @@ export async function POST(request) {
     });
     return NextResponse.json(product);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
   }
 }
 
 // PUT: Ürün güncelle (id ile)
 export async function PUT(request) {
-  const data = await request.json();
-  const { id, ...rest } = data;
-  const product = await prisma.product.update({ where: { id }, data: {
-    ...rest,
-    contactInsteadOfBuy: undefined // backend'de de kaldırıldı
-  }});
-  return NextResponse.json(product);
+  try {
+    const data = await request.json();
+    const { id, ...rest } = data;
+    const product = await prisma.product.update({ where: { id }, data: {
+      ...rest,
+      contactInsteadOfBuy: undefined // backend'de de kaldırıldı
+    }});
+    return NextResponse.json(product);
+  } catch (e) {
+    return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
+  }
 }
 
 // DELETE: Ürün sil (id ile)
 export async function DELETE(request) {
-  const { id } = await request.json();
-  await prisma.product.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await request.json();
+    await prisma.product.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
+  }
 }
