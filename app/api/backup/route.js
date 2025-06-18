@@ -13,44 +13,63 @@ export async function GET() {
         sortBy: { column: 'created_at', order: 'desc' }
       });
     
-    if (error || !files || files.length === 0) {
-      return NextResponse.json({ error: 'Yedek dosyası bulunamadı.' }, { status: 404 });
+    if (error) {
+      return NextResponse.json({ error: `Storage hatası: ${error.message}` }, { status: 500 });
     }
     
-    // Public URL döndür
-    const { data: publicUrlData } = supabase.storage
+    if (!files || files.length === 0) {
+      return NextResponse.json({ error: 'Henüz yedek dosyası oluşturulmamış.' }, { status: 404 });
+    }
+    
+    // Private bucket için signed URL oluştur (24 saat geçerli)
+    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from('backups')
-      .getPublicUrl(files[0].name);
+      .createSignedUrl(files[0].name, 86400); // 24 saat = 86400 saniye
+    
+    if (signedUrlError) {
+      return NextResponse.json({ error: `Signed URL hatası: ${signedUrlError.message}` }, { status: 500 });
+    }
     
     return NextResponse.json({ 
-      downloadUrl: publicUrlData.publicUrl,
+      downloadUrl: signedUrlData.signedUrl,
       fileName: files[0].name,
-      createdAt: files[0].created_at
+      createdAt: files[0].created_at,
+      expiresIn: '24 saat'
     });
   } catch (e) {
-    return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
+    return NextResponse.json({ error: `Backup GET hatası: ${e.message}` }, { status: 500 });
   }
 }
 
 // POST: Veritabanı yedekleme (JSON export)
 export async function POST() {
   try {
-    // Tüm tabloları export et
-    const settings = await prisma.setting.findMany();
-    const homepageContent = await prisma.homepageContent.findMany();
-    const galleryItems = await prisma.galleryItem.findMany();
-    const products = await prisma.product.findMany();
-    const contactContent = await prisma.contactContent.findMany();
-    const users = await prisma.user.findMany();
+    // Tüm tabloları güvenli şekilde export et
+    const settings = await prisma.setting.findMany().catch(() => []);
+    const homepageContent = await prisma.homepageContent.findMany().catch(() => []);
+    const galleryItems = await prisma.galleryItem.findMany().catch(() => []);
+    const products = await prisma.product.findMany().catch(() => []);
+    const contactContent = await prisma.contactContent.findMany().catch(() => []);
+    const users = await prisma.user.findMany().catch(() => []);
     
     const backupData = {
       exportDate: new Date().toISOString(),
-      settings,
-      homepageContent,
-      galleryItems,
-      products,
-      contactContent,
-      users: users.map(u => ({ ...u, password: undefined })) // Şifreleri dahil etme
+      tables: {
+        settings,
+        homepageContent,
+        galleryItems,
+        products,
+        contactContent,
+        users: users.map(u => ({ ...u, password: undefined })) // Şifreleri dahil etme
+      },
+      recordCounts: {
+        settings: settings.length,
+        homepageContent: homepageContent.length,
+        galleryItems: galleryItems.length,
+        products: products.length,
+        contactContent: contactContent.length,
+        users: users.length
+      }
     };
     
     const backupJson = JSON.stringify(backupData, null, 2);
@@ -65,15 +84,16 @@ export async function POST() {
       });
     
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: `Storage upload hatası: ${error.message}` }, { status: 500 });
     }
     
     return NextResponse.json({ 
       success: true, 
       fileName: fileName,
-      message: 'Yedek başarıyla oluşturuldu.'
+      message: 'Yedek başarıyla oluşturuldu.',
+      recordCounts: backupData.recordCounts
     });
   } catch (e) {
-    return NextResponse.json({ success: false, error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
+    return NextResponse.json({ success: false, error: `Backup POST hatası: ${e.message}` }, { status: 500 });
   }
 }
