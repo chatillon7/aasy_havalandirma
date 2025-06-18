@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function AdminNavbar() {
   const [logo, setLogo] = useState("/vercel.svg");
@@ -20,11 +21,12 @@ export default function AdminNavbar() {
         href="/admin"
         style={{ fontSize: 20 }}
       >
-        <img
+        <Image
           src={logo}
           alt="Logo"
           height={32}
           style={{ maxHeight: 32 }}
+          width={32}
         />
       </Link>
       <nav className="nav nav-pills flex-column gap-2">

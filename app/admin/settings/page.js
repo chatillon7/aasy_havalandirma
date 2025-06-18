@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function SettingsPage() {
   const [form, setForm] = useState({ logoUrl: "", siteName: "" });
@@ -67,7 +68,7 @@ export default function SettingsPage() {
               <label className="form-label">Logo & Favicon</label>
               <input type="file" className="form-control" accept="image/*" onChange={handleFileChange} />
               {uploading && <div>Kayıt ediliyor...</div>}
-              {preview && <img src={preview} alt="Logo preview" style={{maxHeight:60, marginTop:10}} />}
+              {preview && <Image src={preview} alt="Logo preview" style={{maxHeight:60, marginTop:10}} width={120} height={60} />}
             </div>
             <div className="col-md-6">
               <label className="form-label">Site Adı</label>

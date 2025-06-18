@@ -2,6 +2,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -18,7 +19,7 @@ export default function ProductDetailPage() {
     <div className="container py-5">
       <div className="row">
         <div className="col-md-6">
-          <img src={product.imageUrl || "/vercel.svg"} className="img-fluid mb-3 rounded" alt={product.name} />
+          <Image src={product.imageUrl || "/vercel.svg"} className="img-fluid mb-3 rounded" alt={product.name} width={600} height={400} />
         </div>
         <div className="col-md-6">
           <h2>{product.name}</h2>

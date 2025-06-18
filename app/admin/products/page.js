@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -107,13 +108,15 @@ export default function ProductsPage() {
               />
               {uploading && <div>Kayıt ediliyor...</div>}
               {form.imageUrl && (
-                <img
+                <Image
                   src={form.imageUrl}
                   alt="Yüklenen görsel"
                   style={{
                     maxHeight: 80,
                     marginTop: 8,
                   }}
+                  width={120}
+                  height={80}
                 />
               )}
             </div>
@@ -196,7 +199,7 @@ export default function ProductsPage() {
               <td>{p.pricePerM2}</td>
               <td>{p.description}</td>
               <td>
-                <img src={p.imageUrl} alt={p.name} width={40} />
+                <Image src={p.imageUrl} alt={p.name} width={40} height={40} />
               </td>
               <td>
                 <button

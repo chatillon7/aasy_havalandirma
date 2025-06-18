@@ -1,6 +1,7 @@
 // Kullanıcıya özel galeri sayfası
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function GalleryPage() {
   const [items, setItems] = useState([]);
@@ -17,7 +18,7 @@ export default function GalleryPage() {
         {items.map((item) => (
           <div className="col-md-4 mb-4" key={item.id}>
             <div className="card h-100 bg-transparent" style={{cursor:'pointer'}} onClick={() => setModalImg(item.imageUrl)}>
-              <img src={item.imageUrl || "/siteicon_1749739708779.png"} className="card-img" alt={item.description} style={{maxHeight:200,objectFit:'cover'}} />
+              <Image src={item.imageUrl || "/siteicon_1749739708779.png"} className="card-img" alt={item.description} style={{maxHeight:200,objectFit:'cover'}} width={400} height={200} />
               <div className="card-img-overlay d-flex flex-column justify-content-end">
                 <strong><p className="card-text text-white shadow-lg bg-body-transparent rounded">{item.description}</p></strong>
               </div>
@@ -31,7 +32,7 @@ export default function GalleryPage() {
           <div className="modal-dialog modal-dialog-centered" onClick={e => e.stopPropagation()}>
             <div className="modal-content">
               <div className="modal-body p-0 bg-dark text-center rounded">
-                <img className="img-fluid rounded" src={modalImg} alt="Büyük görsel" style={{maxWidth:'100%',maxHeight:'90vh'}} />
+                <Image className="img-fluid rounded" src={modalImg} alt="Büyük görsel" style={{maxWidth:'100%',maxHeight:'90vh'}} width={800} height={600} />
               </div>
             </div>
           </div>

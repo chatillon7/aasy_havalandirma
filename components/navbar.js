@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useActivePath } from "./use-active-path";
+import Image from "next/image";
 
 function toggleTheme() {
   if (typeof window === "undefined") return;
@@ -54,11 +55,12 @@ export default function Navbar() {
           className="navbar-brand fw-bold d-flex align-items-center gap-2"
           href="/"
         >
-          <img
+          <Image
             src={logo}
             alt="Logo"
             height={32}
             style={{ maxHeight: 32 }}
+            width={32}
           />
         </Link>
         <button

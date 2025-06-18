@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function GalleryPage() {
   const [items, setItems] = useState([]);
@@ -90,13 +91,15 @@ export default function GalleryPage() {
               />
               {uploading && <div>Kayıt ediliyor...</div>}
               {form.imageUrl && (
-                <img
+                <Image
                   src={form.imageUrl}
                   alt="Yüklenen görsel"
                   style={{
                     maxHeight: 80,
                     marginTop: 8,
                   }}
+                  width={120}
+                  height={80}
                 />
               )}
             </div>
@@ -137,43 +140,43 @@ export default function GalleryPage() {
       <h4>Mevcut Galeri Görselleri</h4>
       <div className="card mb-3">
         <div className="card-body">
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Görsel</th>
-            <th>Açıklama</th>
-            <th>İşlem</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item, i) => (
-            <tr key={item.id}>
-              <td>{i + 1}</td>
-              <td>
-                <img src={item.imageUrl} alt="galeri" width={40} />
-              </td>
-              <td>{item.description}</td>
-              <td>
-                <button
-                  className="btn btn-sm btn-primary me-2 my-1"
-                  onClick={() => handleEdit(item)}
-                >
-                  <i className="bi bi-pencil-fill"></i>
-                </button>
-                <button
-                  className="btn btn-sm btn-danger my-1"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  <i className="bi bi-trash-fill"></i>
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    </div>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Görsel</th>
+                <th>Açıklama</th>
+                <th>İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, i) => (
+                <tr key={item.id}>
+                  <td>{i + 1}</td>
+                  <td>
+                    <Image src={item.imageUrl} alt="galeri" width={40} height={40} />
+                  </td>
+                  <td>{item.description}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-primary me-2 my-1"
+                      onClick={() => handleEdit(item)}
+                    >
+                      <i className="bi bi-pencil-fill"></i>
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger my-1"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <i className="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

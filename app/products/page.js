@@ -1,6 +1,7 @@
 // Kullanıcıya özel ürünler sayfası
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -15,9 +16,19 @@ export default function ProductsPage() {
       <div className="row">
         {products.map((p) => (
           <div className="col-md-4 mb-4" key={p.id}>
-            <a href={`/products/${p.id}`} style={{textDecoration:'none',color:'inherit'}}>
+            <a
+              href={`/products/${p.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <div className="card h-100">
-                <img src={p.imageUrl || "/vercel.svg"} className="card-img-top" alt={p.name} style={{maxHeight:200,objectFit:'cover'}} />
+                <Image
+                  src={p.imageUrl || "/vercel.svg"}
+                  className="card-img-top"
+                  alt={p.name}
+                  style={{ maxHeight: 200, objectFit: "cover" }}
+                  width={400}
+                  height={200}
+                />
                 <div className="card-body">
                   <h5 className="card-title">{p.name}</h5>
                   <p className="card-text">{p.description}</p>

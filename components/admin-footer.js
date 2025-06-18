@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AdminFooter() {
   const [logo, setLogo] = useState("/vercel.svg");
@@ -18,7 +19,7 @@ export default function AdminFooter() {
     <footer className="bg-light border-top mt-5 py-4">
       <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
         <div className="d-flex align-items-center gap-2">
-          <img src={logo} alt="Logo" height={32} style={{ maxHeight: 32 }} />
+          <Image src={logo} alt="Logo" height={32} style={{ maxHeight: 32 }} width={32} />
         </div>
         <div className="text-muted small">
           © {year} {siteName} | Tüm hakları saklıdır.
