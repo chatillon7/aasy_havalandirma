@@ -41,15 +41,11 @@ export default function AdminNavbar() {
         </Link>
         <Link className="nav-link text-light" href="/admin/inquiries">
           Talepler
-        </Link>
-        <Link className="nav-link text-light" href="/admin/homepage">
+        </Link>        <Link className="nav-link text-light" href="/admin/homepage">
           Anasayfa İçeriği
         </Link>
         <Link className="nav-link text-light" href="/admin/settings">
           Site Ayarları
-        </Link>
-        <Link className="nav-link text-light" href="/admin/backup">
-          Veritabanı Yedekle/Sıfırla
         </Link>
         <Link className="nav-link text-light" href="/admin/profile">
           Hesap Bilgileri
