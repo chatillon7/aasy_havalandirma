@@ -1,0 +1,6 @@
+Aşağıdaki dosya ve kodlar sign_up ile ilgili olduğu için silinecek:
+- app/auth/sign_up/page.js
+- components/auth/signup-form.js
+- app/actions/auth.js içindeki signup fonksiyonu ve SignupFormSchema importu
+- lib/definitions.js içindeki SignupFormSchema
+- Navbar veya başka bir yerde sign_up linki varsa kaldırılacak

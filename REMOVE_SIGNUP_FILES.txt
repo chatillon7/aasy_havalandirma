@@ -1,0 +1,7 @@
+Silinecek dosyalar:
+- app/auth/sign_up/page.js
+- components/auth/signup-form.js
+
+Koddan tamamen kaldırılacak:
+- app/actions/auth.js: signup fonksiyonu ve SignupFormSchema importu
+- lib/definitions.js: SignupFormSchema

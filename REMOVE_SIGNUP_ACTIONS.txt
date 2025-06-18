@@ -1,0 +1,10 @@
+Aşağıdaki kodlar silinecek:
+
+app/actions/auth.js:
+- import { SignupFormSchema, LoginFormSchema } from '@/lib/definitions'
+- export async function signup(state, formData) {...}
+- signup fonksiyonu ile ilgili tüm kodlar
+- SignupFormSchema ile ilgili tüm kodlar
+
+lib/definitions.js:
+- export const SignupFormSchema = z.object({...})

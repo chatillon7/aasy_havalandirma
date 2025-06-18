@@ -1,0 +1,3 @@
+Aşağıdaki dosyalar silinecek:
+- components/auth/signup-form.js
+- app/auth/sign_up/page.js

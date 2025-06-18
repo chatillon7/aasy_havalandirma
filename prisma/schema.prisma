@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Product {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  description         String
+  imageUrl            String
+  pricePerM2          Float
+  contactInsteadOfBuy Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model GalleryItem {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactInfo {
+  id      Int    @id @default(autoincrement())
+  mapUrl  String
+  phone   String
+  address String
+  email   String
+}
+
+model Inquiry {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  phone     String
+  product   String
+  extraInfo String?
+  createdAt DateTime @default(now())
+}
+
+model HomepageContent {
+  id           Int    @id @default(autoincrement())
+  videoUrl     String
+  purpose      String
+  info         String @default("")
+}
+
+model SiteSettings {
+  id         Int    @id @default(autoincrement())
+  logoUrl    String
+  tabTitle   String
+  siteName   String
+}
