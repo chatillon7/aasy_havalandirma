@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 import path from 'path';
-import { promises as fs } from 'fs';
 
 export const runtime = 'nodejs';
 
@@ -11,12 +11,29 @@ export async function POST(request) {
     if (!file) {
       return NextResponse.json({ error: 'Dosya bulunamadı.' }, { status: 400 });
     }
+    
     const buffer = Buffer.from(await file.arrayBuffer());
     const ext = path.extname(file.name) || '.jpg';
     const fileName = `homepage_${Date.now()}${ext}`;
-    const filePath = path.join(process.cwd(), 'public', fileName);
-    await fs.writeFile(filePath, buffer);
-    return NextResponse.json({ url: `/${fileName}` });
+    
+    // Supabase Storage'a dosya yükleme
+    const { data, error } = await supabase.storage
+      .from('homepage')
+      .upload(fileName, buffer, {
+        contentType: file.type || 'image/jpeg',
+        upsert: false
+      });
+    
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    
+    // Public URL oluşturma
+    const { data: publicUrlData } = supabase.storage
+      .from('homepage')
+      .getPublicUrl(fileName);
+    
+    return NextResponse.json({ url: publicUrlData.publicUrl });
   } catch (e) {
     return NextResponse.json({ error: e.message || 'Bilinmeyen bir hata oluştu.' }, { status: 500 });
   }
