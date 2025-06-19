@@ -116,9 +116,8 @@ export default function Navbar() {
                 <i className="bi bi-person-raised-hand"></i>
               </Link>
             </li>
-          </ul>
-          <button
-            className={`btn btn-sm ms-2 ${
+          <li
+            className={`nav-item ${
               theme === "dark" ? "btn-light" : "btn-dark"
             }`}
             onClick={handleTheme}
@@ -129,7 +128,8 @@ export default function Navbar() {
               ? <i className="bi bi-sun"></i>
               : <i className="bi bi-moon-fill"></i>
             }
-          </button>
+          </li>
+          </ul>
         </div>
       </div>
     </nav>
