@@ -44,7 +44,10 @@ export default function Footer() {
       >
         <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
           <div className="d-flex align-items-center gap-2">
-            <Image src={logo} alt="Logo" height={32} style={{ maxHeight: 32 }} width={32} />
+            <Image src={logo} alt="Logo" 
+            height={36}
+            style={{ maxHeight: 36 }}
+            width={96}/>
           </div>
           <div className="text-muted small">
             © {year} {siteName} | Tüm hakları saklıdır.

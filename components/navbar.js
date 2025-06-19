@@ -58,9 +58,9 @@ export default function Navbar() {
           <Image
             src={logo}
             alt="Logo"
-            height={32}
-            style={{ maxHeight: 32 }}
-            width={32}
+            height={36}
+            style={{ maxHeight: 36 }}
+            width={96}
           />
         </Link>
         <button

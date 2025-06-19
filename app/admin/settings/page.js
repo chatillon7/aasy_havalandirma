@@ -68,7 +68,7 @@ export default function SettingsPage() {
               <label className="form-label">Logo & Favicon</label>
               <input type="file" className="form-control" accept="image/*" onChange={handleFileChange} />
               {uploading && <div>Kayıt ediliyor...</div>}
-              {preview && <Image src={preview} alt="Logo preview" style={{maxHeight:60, marginTop:10}} width={120} height={60} />}
+              {preview && <Image src={preview} alt="Logo preview" style={{maxHeight:72, marginTop:10}} width={192} height={72} />}
             </div>
             <div className="col-md-6">
               <label className="form-label">Site Adı</label>

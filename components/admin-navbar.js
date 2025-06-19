@@ -17,16 +17,16 @@ export default function AdminNavbar() {
   return (
     <div className="d-flex flex-column align-items-stretch p-3">
       <Link
-        className="navbar-brand fw-bold text-light d-flex align-items-center gap-2 mb-4"
+        className="navbar-brand fw-bold text-light d-flex align-items-center gap-2 ms-3 mb-3"
         href="/admin"
         style={{ fontSize: 20 }}
       >
         <Image
           src={logo}
           alt="Logo"
-          height={32}
-          style={{ maxHeight: 32 }}
-          width={32}
+            height={36}
+            style={{ maxHeight: 36 }}
+            width={96}
         />
       </Link>
       <nav className="nav nav-pills flex-column gap-2">
