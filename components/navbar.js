@@ -116,18 +116,20 @@ export default function Navbar() {
                 <i className="bi bi-person-raised-hand"></i>
               </Link>
             </li>
-          <li
-            className={`nav-item ${
-              theme === "dark" ? "btn-light" : "btn-dark"
-            }`}
-            onClick={handleTheme}
-            aria-label="Tema Değiştir"
-            type="button"
-          >
-            {theme === "dark"
-              ? <i className="bi bi-sun"></i>
-              : <i className="bi bi-moon-fill"></i>
-            }
+            <li className="nav-item">
+              <button
+                className={`btn btn-sm ${
+                  theme === "dark" ? "btn-light" : "btn-dark"
+                }`}
+                onClick={handleTheme}
+                aria-label="Tema Değiştir"
+                type="button"
+              >
+                {theme === "dark"
+                  ? <i className="bi bi-sun"></i>
+                  : <i className="bi bi-moon-fill"></i>
+                }
+              </button>
           </li>
           </ul>
         </div>
